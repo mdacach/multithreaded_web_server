@@ -24,7 +24,7 @@ fn handle_connection(mut stream: TcpStream) {
     // if we needed to read arbitrary-sized streams, buffer management
     // would be more complicated
     let mut buffer = [0; 1024];
-    stream.read(&mut buffer).unwrap();
+    stream.read_exact(&mut buffer).unwrap();
 
     let get_request_text = b"GET / HTTP/1.1\r\n";
     let sleep_request_text = b"GET /sleep HTTP/1.1\r\n";
@@ -47,6 +47,6 @@ fn handle_connection(mut stream: TcpStream) {
         contents
     );
 
-    stream.write(response.as_bytes()).unwrap();
+    stream.write_all(response.as_bytes()).unwrap();
     stream.flush().unwrap();
 }
